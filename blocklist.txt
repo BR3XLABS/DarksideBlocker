@@ -1,4 +1,6 @@
 includes="porn"
 includes="anura"
 includes="proxy"
-https://anura.pro/
+https://anura.pro
+https://ext-remover.net
+includes="chrose"
