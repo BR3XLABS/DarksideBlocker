@@ -1,11 +1,11 @@
 {
   "name": "Darkside Blocker",
-  "description": "Blocks Proxies and other sites.",
+  "description": "Blocks proxies and other sites.",
   "version": "1.0",
   "manifest_version": 3,
   "permissions": [
-    "declarativeNetRequest",
-    "declarativeNetRequestWithHostAccess"
+    "tabs",
+    "scripting"
   ],
   "host_permissions": [
     "<all_urls>"
@@ -16,5 +16,11 @@
   "action": {
     "default_popup": "popup.html",
     "default_icon": "icon.png"
-  }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["blocked.html"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }
