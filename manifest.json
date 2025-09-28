@@ -8,7 +8,8 @@
     "scripting"
   ],
   "host_permissions": [
-    "<all_urls>"
+    "<all_urls>",
+  "https://raw.githubusercontent.com/"
   ],
   "background": {
     "service_worker": "background.js"
