@@ -1,38 +1,51 @@
+let includesRules = [];
+let exactMatchRules = [];
+
 async function loadBlocklist() {
-  const response = await fetch(chrome.runtime.getURL('blocklist.txt'));
-  const text = await response.text();
+  const res = await fetch(chrome.runtime.getURL("blocklist.txt"));
+  const text = await res.text();
 
-  const lines = text.split('\n').map(line => line.trim()).filter(Boolean);
+  includesRules = [];
+  exactMatchRules = [];
 
-  let rules = [];
-  let ruleId = 1;
+  const lines = text
+    .split('\n')
+    .map(line => line.trim())
+    .filter(Boolean); // Remove empty lines
 
   for (const line of lines) {
     if (line.startsWith('includes="') && line.endsWith('"')) {
-      const urlPart = line.slice(9, -1); // Extract what's inside the quotes
-
-      // Build the rule
-      rules.push({
-        id: ruleId++,
-        priority: 1,
-        action: { type: "block" },
-        condition: {
-          urlFilter: urlPart,
-          resourceTypes: ["main_frame"]
-        }
-      });
+      const substring = line.slice(9, -1); // extract what's inside includes=""
+      includesRules.push(substring);
+    } else {
+      exactMatchRules.push(line); // treat as full URL
     }
-    // You can add more syntax here later (e.g. startsWith=, endsWith=, etc.)
   }
 
-  // Remove previous rules
-  const oldRuleIds = rules.map(r => r.id);
-  await chrome.declarativeNetRequest.updateDynamicRules({
-    removeRuleIds: oldRuleIds,
-    addRules: rules
-  });
+  console.log(`Loaded ${includesRules.length} includes and ${exactMatchRules.length} exact match rules`);
+}
 
-  console.log(`Loaded ${rules.length} rules from blocklist.txt`);
+function isBlocked(url) {
+  // Exact URL match
+  if (exactMatchRules.includes(url)) {
+    return true;
+  }
+
+  // Substring match
+  return includesRules.some(substring => url.includes(substring));
 }
 
 chrome.runtime.onInstalled.addListener(loadBlocklist);
+chrome.runtime.onStartup.addListener(loadBlocklist);
+
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+  if (changeInfo.status === 'complete' && tab.url && isBlocked(tab.url)) {
+    const redirectUrl = chrome.runtime.getURL("blocked.html");
+
+    if (!tab.url.startsWith(redirectUrl)) {
+      chrome.tabs.update(tabId, {
+        url: redirectUrl + `?blocked=${encodeURIComponent(tab.url)}`
+      });
+    }
+  }
+});
