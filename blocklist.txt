@@ -4,3 +4,4 @@ includes="proxy"
 https://anura.pro
 https://ext-remover.net
 includes="chrose"
+includes="ext-remover"
