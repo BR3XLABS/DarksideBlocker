@@ -44,7 +44,8 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 
     if (!tab.url.startsWith(redirectUrl)) {
       chrome.tabs.update(tabId, {
-        url: redirectUrl + `?blocked=${encodeURIComponent(tab.url)}`
+        const base64 = btoa(tab.url);
+url: `${redirectUrl}?blocked=${base64}`
       });
     }
   }
