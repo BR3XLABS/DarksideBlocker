@@ -1,0 +1,25 @@
+{
+  "name": "Darkside Blocker",
+  "description": "Blocks proxies and other sites.",
+  "version": "1.0",
+  "manifest_version": 3,
+  "permissions": [
+    "tabs",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "web_accessible_resources": [
+  {
+    "resources": ["blocked.html", "blocked.js"],
+    "matches": ["<all_urls>"]
+  }
+  ]
+}
