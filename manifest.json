@@ -9,7 +9,7 @@
   ],
   "host_permissions": [
     "<all_urls>",
-  "https://raw.githubusercontent.com/"
+    "https://raw.githubusercontent.com/"
   ],
   "background": {
     "service_worker": "background.js"
@@ -17,10 +17,13 @@
   "action": {
     "default_popup": "popup.html"
   },
+  "icons": {
+    "128": "icon.png"
+  },
   "web_accessible_resources": [
-  {
-    "resources": ["blocked.html", "blocked.js"],
-    "matches": ["<all_urls>"]
-  }
+    {
+      "resources": ["blocked.html", "blocked.js"],
+      "matches": ["<all_urls>"]
+    }
   ]
 }
