@@ -14,7 +14,7 @@ function extractQuotedValue(line, prefix) {
 
 // Load blocklist.txt and parse rules
 async function loadBlocklist() {
-  const res = await fetch(chrome.runtime.getURL("blocklist.txt"));
+  const res = await fetch(chrome.runtime.getURL("https://raw.githubusercontent.com/BR3XLABS/DarksideBlocker/refs/heads/main/blocklist.txt"));
   const text = await res.text();
 
   includesRules = [];
@@ -80,3 +80,4 @@ chrome.runtime.onStartup.addListener(loadBlocklist);
 
 // Also load immediately on background start
 loadBlocklist();
+
