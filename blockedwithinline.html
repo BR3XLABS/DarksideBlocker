@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Site Blocked</title>
+  <style>
+    body {
+      background-color: #111;
+      color: #f55;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 20%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Site Blocked</h1>
+  <p id="url">Loading...</p>
+
+  <!-- Load JS -->
+  <script>// blocked.js
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const b64 = params.get('blocked');
+
+  if (!b64) {
+    document.getElementById('url').textContent = 'Blocked URL not provided.';
+    return;
+  }
+
+  try {
+    const decoded = atob(b64);
+    // Use innerHTML instead of textContent
+    document.getElementById('url').innerHTML = `Blocked: ${decoded}`;
+  } catch (e) {
+    document.getElementById('url').textContent = 'Blocked: Unknown URL';
+  }
+});
+
+</script>
+</body>
+</html>
